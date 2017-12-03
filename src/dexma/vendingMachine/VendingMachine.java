@@ -32,9 +32,15 @@ public class VendingMachine {
 	 */
 	private double activeValue;
 	
+	/**
+	 * Constructor
+	 * @param products Map of products with their count
+	 * @param coins Map of Coins with their count
+	 */
 	public VendingMachine(HashMap<Product,Integer> products, HashMap<CoinType,Integer> coins) {
 		this.products = products;
 		this.coins = coins;
+		this.activeValue = 0;
 	}
 	
 	/**
@@ -155,5 +161,15 @@ public class VendingMachine {
 	 */
 	public double getActiveValue() {
 		return this.activeValue;
+	}
+	/**
+	 * Reset the Vending Machine
+	 * @param products Map of products with their count
+	 * @param coins Map of Coins with their count
+	 */
+	public void reset(HashMap<Product,Integer> products, HashMap<CoinType,Integer> coins) {
+		this.products = products;
+		this.coins = coins;
+		this.activeValue = 0;
 	}
 }
