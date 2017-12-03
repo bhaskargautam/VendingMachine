@@ -30,7 +30,7 @@ public class VendingMachine {
 	 * Current amount paid by user.
 	 * This amount is refunded on cancel.
 	 */
-	double activeValue;
+	private double activeValue;
 	
 	public VendingMachine(HashMap<Product,Integer> products, HashMap<CoinType,Integer> coins) {
 		this.products = products;
@@ -43,17 +43,17 @@ public class VendingMachine {
 	 * @return the active value in vending machine.
 	 */
 	public double addCoin(Coin coin) {
-		this.activeValue = this.activeValue + coin.getValue();
-		if(this.coins.containsKey(coin.ctype)) {
-			this.coins.put(coin.ctype, this.coins.get(coin.ctype) + 1);
+		this.activeValue = (this.getActiveValue() + coin.getValue());
+		if(this.coins.containsKey(coin.getCtype())) {
+			this.coins.put(coin.getCtype(), this.coins.get(coin.getCtype()) + 1);
 		} else {
-			this.coins.put(coin.ctype, 1);
+			this.coins.put(coin.getCtype(), 1);
 		}
 		LOGGER.log(Level.INFO, String.format(
 				"%.2f Euro added. Balance %.2f Euro", 
 				coin.getValue(),
-				this.activeValue));
-		return this.activeValue;
+				this.getActiveValue()));
+		return this.getActiveValue();
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class VendingMachine {
 		for (Coin coin : coins) {
 			addCoin(coin);
 		}
-		return this.activeValue;
+		return this.getActiveValue();
 	}
 	
 	/**
@@ -103,9 +103,9 @@ public class VendingMachine {
 				}
 				
 				//Verify User has sufficient funds
-				if(this.activeValue >= product.getPrice()) {
+				if(this.getActiveValue() >= product.getPrice()) {
 					//User can purchase the product 
-					this.activeValue = this.activeValue - product.getPrice();
+					this.activeValue = (this.getActiveValue() - product.getPrice());
 					this.products.put(product, this.products.get(product) - 1);
 					LOGGER.log(Level.INFO, String.format(
 							"Thanks for puchasing %s for %.2f Euro",
@@ -114,7 +114,7 @@ public class VendingMachine {
 					return true;
 				}
 				else {
-					double remainingAmount = product.getPrice() - this.activeValue;
+					double remainingAmount = product.getPrice() - this.getActiveValue();
 					LOGGER.log(Level.INFO, String.format("Please add %.2f Euro more",remainingAmount));
 					throw new VendingMachineException(ErrorCode.INSUFFICIENT_AMOUNT);	
 				}
@@ -132,21 +132,28 @@ public class VendingMachine {
 		ArrayList<Coin> coins = new ArrayList<Coin>();
 		for(Entry<CoinType,Double> entry : Coin.valueMap.entrySet()) {
 			if(this.coins.containsKey(entry.getKey())) {
-				while(this.coins.get(entry.getKey()) > 0 && this.activeValue >= entry.getValue()) {
+				while(this.coins.get(entry.getKey()) > 0 && this.getActiveValue() >= entry.getValue()) {
 					LOGGER.log(Level.INFO, String.format("Returning Coin %.2f Euro", entry.getValue()));
 					coins.add(new Coin(entry.getKey()));
 					this.coins.put(entry.getKey(), this.coins.get(entry.getKey()) - 1);
-					this.activeValue = this.activeValue - entry.getValue();
+					this.activeValue = (this.getActiveValue() - entry.getValue());
 				}
 			}
 		}
 		
 		//If No coins can be returned, throw error.
-		if(coins.isEmpty() && this.activeValue >= Coin.MINIMUM_VALUE) {
+		if(coins.isEmpty() && this.getActiveValue() >= Coin.MINIMUM_VALUE) {
 			LOGGER.log(Level.SEVERE, "Coins are Out of Stock. Cannot Dispense remaining amount");
 			throw new VendingMachineException(ErrorCode.COIN_OUT_OF_STOCK);
 		}
 		
 		return coins;
+	}
+	
+	/**
+	 * @return Current Balance in Vending Machine
+	 */
+	public double getActiveValue() {
+		return this.activeValue;
 	}
 }

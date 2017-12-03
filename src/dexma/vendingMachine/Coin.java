@@ -5,26 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 /**
- * Defines the valid Coin Types accepted by the vending machine.
- * @author bhaskargautam
- *
- */
-enum CoinType {
-	FIVE_CENT,
-	TEN_CENT,
-	TWENTY_CENT,
-	FIFTY_CENT,
-	ONE_EURO,
-	TWO_EURO
-}
-
-/**
  * Defines a single Coin accepted by the vending machine.
  * @author bhaskargautam
  *
  */
 public class Coin {
-	CoinType ctype;
+	private CoinType ctype;
 	Double value;
 	
 	/**
@@ -75,5 +61,12 @@ public class Coin {
 			}
 		}
 		return coins;
+	}
+	
+	/**
+	 * @return Coin Type {1 Euro, 10 Cents, ..}
+	 */
+	public CoinType getCtype() {
+		return this.ctype;
 	}
 }

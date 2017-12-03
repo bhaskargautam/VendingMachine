@@ -13,7 +13,7 @@ enum ErrorCode {
 }
 
 public class VendingMachineException extends Exception {
-	
+	private static final long serialVersionUID = 1L;
 	ErrorCode errorCode;
 	
 	public VendingMachineException(ErrorCode e) {
