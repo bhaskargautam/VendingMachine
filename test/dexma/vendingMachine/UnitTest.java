@@ -14,7 +14,11 @@ import dexma.vendingMachine.CoinType;
 import dexma.vendingMachine.Product;
 import dexma.vendingMachine.VendingMachine;
 import dexma.vendingMachine.VendingMachineException;
-
+/**
+ * Unit Test Cases for vending machine
+ * @author bhaskargautam
+ *
+ */
 @Testable
 class UnitTest {
 	

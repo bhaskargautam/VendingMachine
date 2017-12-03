@@ -12,8 +12,12 @@ enum ErrorCode {
 	INCORRECT_PRODUCT_ID
 }
 
+/**
+ * Custom Exception as raised by vending machine.
+ * @author bhaskargautam
+ *
+ */
 public class VendingMachineException extends Exception {
-	private static final long serialVersionUID = 1L;
 	ErrorCode errorCode;
 	
 	public VendingMachineException(ErrorCode e) {
