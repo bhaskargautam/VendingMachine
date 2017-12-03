@@ -33,8 +33,8 @@ public class Coin {
 	 * Note: Preserve sort order while adding new coin type.
 	 * getCoinsForValue() expects this list to be sorted.
 	*/
-	private static final LinkedHashMap<CoinType,Double> valueMap;
-	private static final double MINIMUM_VALUE = 0.05;
+	public static final LinkedHashMap<CoinType,Double> valueMap;
+	public static final double MINIMUM_VALUE = 0.05;
     static
     {
     		valueMap = new LinkedHashMap<CoinType,Double>();
